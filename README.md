@@ -211,20 +211,222 @@ pytest
 
 ### Endpoints da POC
 
-- `GET /health`
+- `GET  /health`
 - `POST /api/v1/tickets`
-- `GET /api/v1/tickets`
+- `GET  /api/v1/tickets`
 - `PATCH /api/v1/tickets/{ticket_id}`
 
-### Exemplo de criação de chamado
+---
+
+## API — Documentação dos Endpoints
+
+### Swagger interativo
+
+Com a API em execução, acesse a documentação interativa nos endereços abaixo:
+
+| Interface | URL |
+|---|---|
+| **Swagger UI** (recomendado) | `http://localhost:8000/docs` |
+| **ReDoc** | `http://localhost:8000/redoc` |
+| **OpenAPI JSON** | `http://localhost:8000/openapi.json` |
+
+---
+
+### Enums e valores permitidos
+
+| Enum | Campo | Valores aceitos |
+|---|---|---|
+| **Categoria** | `category` | `Hardware`, `Software`, `Rede`, `Acesso`, `Outros` |
+| **Prioridade** | `priority` | `Baixa`, `Media`, `Alta` |
+| **Status** | `status` | `EmTriagem`, `Aberto`, `EmAtendimento`, `Resolvido`, `Fechado` |
+
+---
+
+### GET /health
+
+Verifica se a API está no ar.
+
+**Autenticação:** não necessária
+
+**Response 200 — OK**
+```json
+{
+  "status": "ok"
+}
+```
+
+---
+
+### POST /api/v1/tickets
+
+Abre um novo chamado técnico e executa a triagem automática por IA.
+
+**Autenticação:** não necessária (fase 1 — POC)
+
+#### Fluxo interno
+
+1. O chamado é registrado com status `EmTriagem`.
+2. O módulo de IA analisa título e descrição via palavras-chave ponderadas.
+3. O chamado é atualizado para `Aberto` com categoria e prioridade inferidas.
+4. A resposta retorna o chamado classificado.
+
+#### Request body
 
 ```json
 {
   "title": "VPN sem conectar",
   "description": "Não consigo acessar o sistema interno pela VPN desde a manhã.",
-  "requester_name": "Maria",
-  "requester_email": "maria@example.com"
+  "requester_name": "Maria Silva",
+  "requester_email": "maria@empresa.com"
 }
+```
+
+| Campo | Tipo | Obrigatório | Regras |
+|---|---|---|---|
+| `title` | `string` | ✅ | 3–120 caracteres |
+| `description` | `string` | ✅ | 10–2000 caracteres |
+| `requester_name` | `string` | ✅ | 3–80 caracteres |
+| `requester_email` | `string` | ✅ | 5–160 caracteres |
+
+#### Response 201 — Created
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "title": "VPN sem conectar",
+  "description": "Não consigo acessar o sistema interno pela VPN desde a manhã.",
+  "requester_name": "Maria Silva",
+  "requester_email": "maria@empresa.com",
+  "created_at": "2026-05-12T21:00:00Z",
+  "status": "Aberto",
+  "category": "Rede",
+  "priority": "Alta",
+  "classification_confidence": 0.83,
+  "classification_rationale": "Categoria sugerida: Rede (score 2). Prioridade sugerida: Alta (score 2)."
+}
+```
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `id` | `string` (UUID v4) | Identificador único do chamado |
+| `title` | `string` | Título informado |
+| `description` | `string` | Descrição informada |
+| `requester_name` | `string` | Nome do solicitante |
+| `requester_email` | `string` | E-mail do solicitante |
+| `created_at` | `datetime` (ISO 8601 UTC) | Data/hora de abertura |
+| `status` | `string` (enum) | Status atual do chamado |
+| `category` | `string` (enum) | Categoria atribuída pela IA |
+| `priority` | `string` (enum) | Prioridade atribuída pela IA |
+| `classification_confidence` | `float` (0.0–1.0) | Nível de confiança da classificação |
+| `classification_rationale` | `string` | Justificativa textual da IA |
+
+#### Outros códigos
+
+| Código | Situação |
+|---|---|
+| `422 Unprocessable Entity` | Campos inválidos ou ausentes |
+
+---
+
+### GET /api/v1/tickets
+
+Retorna todos os chamados registrados com sua classificação atual.
+
+**Autenticação:** não necessária (fase 1 — POC)
+
+#### Response 200 — OK
+
+Array de objetos `TicketResponse` (mesma estrutura do `POST`).
+
+```json
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "title": "VPN sem conectar",
+    "description": "Não consigo acessar o sistema interno pela VPN desde a manhã.",
+    "requester_name": "Maria Silva",
+    "requester_email": "maria@empresa.com",
+    "created_at": "2026-05-12T21:00:00Z",
+    "status": "Aberto",
+    "category": "Rede",
+    "priority": "Alta",
+    "classification_confidence": 0.83,
+    "classification_rationale": "Categoria sugerida: Rede (score 2). Prioridade sugerida: Alta (score 2)."
+  }
+]
+```
+
+Quando não há chamados: retorna `[]`.
+
+---
+
+### PATCH /api/v1/tickets/{ticket_id}
+
+Atualiza um chamado existente — uso administrativo.
+
+**Autenticação:** não necessária (fase 1 — POC)
+
+#### Path parameter
+
+| Parâmetro | Tipo | Descrição |
+|---|---|---|
+| `ticket_id` | `string` (UUID) | ID do chamado a ser atualizado |
+
+#### Request body
+
+Todos os campos são **opcionais**. Apenas os campos enviados serão alterados.
+
+```json
+{
+  "status": "EmAtendimento",
+  "category": "Rede",
+  "priority": "Alta"
+}
+```
+
+| Campo | Tipo | Obrigatório | Valores aceitos |
+|---|---|---|---|
+| `status` | `string` (enum) | ❌ | `EmTriagem`, `Aberto`, `EmAtendimento`, `Resolvido`, `Fechado` |
+| `category` | `string` (enum) | ❌ | `Hardware`, `Software`, `Rede`, `Acesso`, `Outros` |
+| `priority` | `string` (enum) | ❌ | `Baixa`, `Media`, `Alta` |
+
+#### Response 200 — OK
+
+Objeto `TicketResponse` com os dados atualizados.
+
+#### Outros códigos
+
+| Código | Situação |
+|---|---|
+| `404 Not Found` | `ticket_id` não encontrado |
+| `422 Unprocessable Entity` | Valor de enum inválido |
+
+---
+
+### Exemplos com curl
+
+**Abrir chamado:**
+```bash
+curl -X POST http://localhost:8000/api/v1/tickets \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Impressora não imprime",
+    "description": "A impressora do setor financeiro parou de funcionar após atualização do driver.",
+    "requester_name": "Carlos Mendes",
+    "requester_email": "carlos@empresa.com"
+  }'
+```
+
+**Listar chamados:**
+```bash
+curl http://localhost:8000/api/v1/tickets
+```
+
+**Atualizar status e corrigir prioridade:**
+```bash
+curl -X PATCH http://localhost:8000/api/v1/tickets/{ticket_id} \
+  -H "Content-Type: application/json" \
+  -d '{"status": "EmAtendimento", "priority": "Alta"}'
 ```
 
 ---
