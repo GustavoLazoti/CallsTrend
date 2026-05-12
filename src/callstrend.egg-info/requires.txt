@@ -1,6 +1,0 @@
-fastapi==0.136.1
-uvicorn==0.46.0
-
-[dev]
-httpx==0.28.1
-pytest==9.0.3
