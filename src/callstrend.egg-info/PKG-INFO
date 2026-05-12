@@ -1,3 +1,15 @@
+Metadata-Version: 2.4
+Name: callstrend
+Version: 0.1.0
+Summary: POC de help desk com triagem automática de chamados
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi==0.136.1
+Requires-Dist: uvicorn==0.46.0
+Provides-Extra: dev
+Requires-Dist: httpx==0.28.1; extra == "dev"
+Requires-Dist: pytest==9.0.3; extra == "dev"
+
 # CallsTrend
 
 Sistema acadêmico de Help Desk com triagem automática de chamados por IA.
