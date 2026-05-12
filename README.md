@@ -230,6 +230,8 @@ Com a API em execução, acesse a documentação interativa nos endereços abaix
 | **ReDoc** | `http://localhost:8000/redoc` |
 | **OpenAPI JSON** | `http://localhost:8000/openapi.json` |
 
+Arquivo separado (somente API): `src/callstrend/api/doc/swagger.md`
+
 ---
 
 ### Enums e valores permitidos
