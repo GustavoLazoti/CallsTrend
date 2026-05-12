@@ -1,14 +1,10 @@
 # Swagger — CallsTrend API
 
-Documentação focada exclusivamente nos endpoints da API.
-
-## Acesso rápido
-
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-- OpenAPI JSON: `http://localhost:8000/openapi.json`
+Professor, como as API's são 'middle' entre a interface que o usuário cadastra e o backend, não será tratado aqui questões de autênticação, isso será realizado na próxima camada.
+Em adição, apesar de complexo de desenvolver, é direto ao ponto, ou seja, não tem necessidade de diversos endpoints já que os presentes aqui são suficiêntes para as atuações principais;
 
 ## Enums
+Abaixo, algumas categorias inicialmente pensadas para retorno de IA, imaginando um uso coorporativo.
 
 | Campo | Valores |
 |---|---|
@@ -20,9 +16,9 @@ Documentação focada exclusivamente nos endpoints da API.
 
 ### GET `/health`
 
-Verifica disponibilidade da API.
+Verifica disponibilidade da API, simples assim.
 
-**Response 200**
+Response 200
 ```json
 {
   "status": "ok"
@@ -35,7 +31,7 @@ Verifica disponibilidade da API.
 
 Cria chamado e executa classificação automática.
 
-**Request body**
+Request body
 ```json
 {
   "title": "VPN sem conectar",
@@ -45,7 +41,7 @@ Cria chamado e executa classificação automática.
 }
 ```
 
-**Response 201**
+Response 201
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -62,7 +58,7 @@ Cria chamado e executa classificação automática.
 }
 ```
 
-**Códigos**
+Códigos
 - `201` criado com sucesso
 - `422` validação inválida
 
@@ -72,7 +68,7 @@ Cria chamado e executa classificação automática.
 
 Lista todos os chamados.
 
-**Response 200**
+Response 200
 ```json
 [
   {
@@ -97,7 +93,7 @@ Lista todos os chamados.
 
 Atualiza status/categoria/prioridade de um chamado.
 
-**Request body (campos opcionais)**
+Request body (campos opcionais)
 ```json
 {
   "status": "EmAtendimento",
