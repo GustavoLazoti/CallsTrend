@@ -386,3 +386,6 @@ Desenvolver uma ferramenta acadêmica de Help Desk que utilize Inteligência Art
 • Segurança: Autenticação obrigatória com senhas criptografadas via algoritmos de hash (ex: bcrypt).  
 • Desempenho: A triagem pela IA deve ocorrer em no máximo 3 segundos.  
 • Escopo: O sistema é focado em ambiente acadêmico, sem integrações externas (como e-mail ou Slack) nesta fase.
+
+
+1. Sugestão de Stack TecnológicaFrontend (Camada de Apresentação): React.js.  Justificativa: É ideal para criar interfaces simples e intuitivas (conforme o RNF03) e permite realizar a abertura de chamados com poucas interações.  Backend (Camada de Aplicação): Python com FastAPI ou Flask.  Justificativa: Python é a linguagem líder para integração com Inteligência Artificial. O FastAPI é extremamente rápido, ajudando a cumprir o requisito de desempenho de triagem em até 3 segundos (RNF01).  Módulo de IA (Camada de Inteligência): Scikit-learn ou spaCy.  Justificativa: São bibliotecas robustas para processamento de texto e classificação, perfeitas para um ambiente acadêmico demonstrativo.  Banco de Dados (Camada de Dados): PostgreSQL ou SQLite.  Justificativa: Como o projeto exige um banco relacional e armazenamento seguro de senhas (criptografia), essas opções são o padrão da indústria.
