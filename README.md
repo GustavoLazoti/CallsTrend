@@ -1,60 +1,504 @@
-DECLARAÇÃO DE ESCOPO DO PROJETO
+# CallsTrend
 
-1. Identificação do Projeto
+Sistema acadêmico de Help Desk com triagem automática de chamados por IA.
 
-Nome do Projeto: Sistema de Help Desk com Triagem Automática de Chamados utilizando Inteligência Artificial
-Disciplina: Engenharia de Software
-Tipo de Projeto: Projeto acadêmico de desenvolvimento de software
+## 1. Entendimento consolidado do projeto
 
-2. Descrição Geral do Escopo
+### 1.1 Objetivo do produto
 
-Este documento tem como objetivo definir claramente o escopo do projeto, descrevendo as entregas, funcionalidades, critérios de aceitação, restrições e exclusões.
-A Declaração de Escopo estabelece os limites do projeto, garantindo alinhamento entre as expectativas do aluno desenvolvedor e os critérios de avaliação da disciplina, evitando ambiguidades e expansão não controlada do escopo (scope creep).
+O projeto tem como foco reduzir a triagem manual inicial de chamados técnicos. A ideia central é permitir que o usuário abra um chamado com texto livre e que o sistema atribua automaticamente:
 
-3. Entregas do Projeto (Deliverables)
+- uma **categoria**;
+- uma **prioridade**;
+- um **status inicial coerente com o fluxo**.
 
-3.1 Entregas Principais
+O administrador continua responsável pela governança do atendimento, podendo revisar, corrigir e evoluir o chamado ao longo do processo.
 
-Documento TAP (Termo de Abertura do Projeto) Cronograma inicial com marcos (Gantt) Declaração de Escopo Estrutura Analítica do Projeto (EAP / WBS) Documento de Requisitos Funcionais e Não Funcionais Diagramas do sistema (casos de uso, classes e arquitetura) Protótipo funcional do sistema de Help Desk Módulo de Triagem Automática de Chamados com IA Relatório de testes e validação Documentação final do projeto 
+### 1.2 Escopo funcional
 
-4. Funcionalidades e Requisitos do Sistema
+Os requisitos funcionais descritos no material original levam a um fluxo principal bem definido:
 
-4.1 Requisitos Funcionais
+1. cadastro e autenticação de usuários;
+2. abertura de chamado com título e descrição;
+3. classificação automática por categoria;
+4. classificação automática por prioridade;
+5. consulta do status do chamado;
+6. gestão administrativa dos chamados;
+7. atualização do status de atendimento.
 
-RF01 – Permitir cadastro e autenticação de usuários RF02 – Permitir abertura de chamados com descrição textual RF03 – Classificar automaticamente chamados por categoria utilizando IA RF04 – Classificar automaticamente chamados por nível de prioridade RF05 – Permitir visualização e acompanhamento do status do chamado RF06 – Permitir que administradores visualizem e gerenciem chamados RF07 – Permitir atualização do status do chamado (aberto, em andamento, resolvido) 
+### 1.3 Escopo não funcional
 
-4.2 Requisitos Não Funcionais
+O README original deixa claro que o projeto deve ser:
 
-RNF01 – O sistema deve possuir interface simples e intuitiva RNF02 – O tempo de resposta da triagem automática deve ser adequado para uso acadêmico RNF03 – O sistema deve ser desenvolvido utilizando tecnologias gratuitas ou open-source RNF04 – O sistema deve ser acessível via navegador web RNF05 – O código-fonte deve seguir boas práticas de organização e versionamento 
+- simples de usar;
+- acessível via navegador;
+- implementado com tecnologias gratuitas ou open-source;
+- demonstrável em ambiente local;
+- organizado com boas práticas de arquitetura e versionamento.
 
-5. Critérios de Aceitação
+Além disso, a triagem automática deve ter caráter **demonstrativo**, não comercial, e responder em tempo adequado para uma apresentação acadêmica.
 
-5.1 Critérios Gerais
+### 1.4 Limites do escopo
 
-Todas as funcionalidades descritas nos requisitos funcionais devem estar implementadas O sistema deve permitir a abertura e triagem automática de chamados O módulo de IA deve classificar chamados de forma demonstrável O sistema deve estar funcional em ambiente local ou acadêmico A documentação exigida pela disciplina deve estar completa e organizada 
+Ficam fora do escopo nesta fase:
 
-5.2 Critérios de Aceitação da Triagem Automática
+- integrações com ferramentas corporativas reais;
+- notificações por e-mail, SMS ou apps externos;
+- SLAs reais de operação;
+- alta disponibilidade e produção;
+- autenticação corporativa avançada;
+- monitoramento em tempo real.
 
-O sistema deve atribuir automaticamente uma categoria ao chamado O sistema deve atribuir automaticamente uma prioridade ao chamado A classificação deve ser visível para o usuário e para o administrador O funcionamento da triagem deve ser demonstrável durante apresentação ou demo 
+### 1.5 Arquitetura pretendida
 
-6. Restrições do Projeto
+O material modela a solução em **4 camadas**:
 
-O projeto será desenvolvido por um único aluno O prazo de desenvolvimento está limitado ao semestre letivo Não haverá investimento financeiro no projeto A base de dados utilizada será simulada ou reduzida O sistema será desenvolvido exclusivamente para fins acadêmicos 
+1. **Apresentação**: interface web do usuário e painel administrativo;
+2. **Aplicação / Backend**: autenticação, regras de negócio, orquestração dos chamados;
+3. **Inteligência Artificial**: módulo isolado responsável pela classificação textual;
+4. **Dados**: persistência de usuários, chamados e logs.
 
-7. Exclusões do Escopo (Fora do Escopo)
+Essa arquitetura favorece evolução incremental e está alinhada com uma implementação baseada em **SOLID**, principalmente por permitir:
 
-Integração com sistemas corporativos reais (ex: ServiceNow, Jira) Envio de notificações por e-mail, SMS ou aplicativos externos Implementação de SLAs reais ou contratos de atendimento Uso do sistema em ambiente de produção Autenticação avançada (SSO, OAuth corporativo) Monitoramento em tempo real ou alta disponibilidade 
+- separar responsabilidades;
+- isolar contratos entre camadas;
+- trocar a implementação da triagem sem reescrever o domínio;
+- manter baixo acoplamento entre API, regras de negócio e infraestrutura.
 
-8. Premissas
+### 1.6 Stack sugerida pelo próprio material
 
-O usuário fornecerá corretamente as informações do chamado O módulo de IA terá caráter demonstrativo, não comercial O ambiente de execução será local ou acadêmico O professor atuará como avaliador e cliente do projeto 
+O README aponta a seguinte direção tecnológica:
 
-9. Controle de Escopo
+- **Frontend**: React.js;
+- **Backend**: Python com FastAPI ou Flask;
+- **Módulo de IA**: Scikit-learn ou spaCy;
+- **Banco de dados**: PostgreSQL ou SQLite.
 
-Qualquer solicitação de alteração no escopo deverá ser avaliada considerando o impacto no prazo e nas entregas do projeto, podendo ser recusada caso comprometa os objetivos acadêmicos estabelecidos nesta Declaração de Escopo.
+### 1.7 Interpretação prática para a execução
 
+Com base no escopo e na arquitetura, a evolução mais fluida do projeto é:
 
-## 1. Diagrama de Classes
+1. provar o fluxo principal com uma **POC funcional**;
+2. manter a triagem como um módulo substituível;
+3. validar o processo fim a fim antes de investir em autenticação robusta e frontend completo;
+4. só depois acoplar persistência relacional definitiva e modelo de IA treinado.
+
+---
+
+## 2. Steps de desenvolvimento para um projeto fluido
+
+## Fase 0 — Fundação do produto
+
+- consolidar escopo, regras de negócio e atores;
+- transformar a documentação acadêmica em backlog técnico;
+- definir convenções de pastas, camadas e contratos;
+- decidir o menor recorte demonstrável da aplicação.
+
+## Fase 1 — POC do fluxo principal
+
+- criar backend inicial;
+- expor endpoint para abertura de chamados;
+- implementar triagem automática demonstrativa;
+- persistir em memória ou SQLite simples;
+- listar chamados e permitir atualização administrativa;
+- documentar execução local.
+
+**Objetivo da fase:** provar que o coração do produto funciona.
+
+## Fase 2 — Consolidação do domínio
+
+- introduzir autenticação básica;
+- separar claramente entidades, casos de uso e adaptadores;
+- registrar logs de classificação;
+- padronizar enums, DTOs e contratos de resposta;
+- ampliar testes automatizados de domínio e API.
+
+**Objetivo da fase:** reduzir débito técnico e preparar escalabilidade.
+
+## Fase 3 — Interface web
+
+- criar tela de abertura de chamado;
+- criar tela de acompanhamento do usuário;
+- criar painel administrativo;
+- integrar frontend com a API;
+- tratar feedback de carregamento, sucesso e erro.
+
+**Objetivo da fase:** tornar a experiência demonstrável para apresentação.
+
+## Fase 4 — Persistência e auditoria
+
+- migrar para banco relacional definitivo;
+- armazenar usuários, chamados e histórico;
+- registrar confiança e justificativa da classificação;
+- permitir trilha de auditoria das correções administrativas.
+
+**Objetivo da fase:** aproximar a solução do desenho arquitetural completo.
+
+## Fase 5 — Evolução real do módulo de IA
+
+- substituir heurísticas por pipeline de NLP;
+- preparar conjunto de exemplos;
+- treinar e validar modelo;
+- medir precisão por categoria e prioridade;
+- manter fallback para classificação segura.
+
+**Objetivo da fase:** evoluir a POC para um classificador academicamente consistente.
+
+## Fase 6 — Qualidade de entrega
+
+- ampliar cobertura de testes;
+- revisar segurança mínima;
+- revisar performance de triagem;
+- preparar roteiro de apresentação;
+- fechar documentação final da disciplina.
+
+---
+
+## 3. Primeira POC iniciada nesta branch
+
+Esta branch inicia a aplicação com um recorte pequeno, mas demonstrável:
+
+- backend em **FastAPI**;
+- arquitetura em camadas com foco em **SOLID**;
+- domínio de chamados separado da infraestrutura;
+- serviço de classificação demonstrativo baseado em palavras-chave;
+- endpoints para criar, listar e atualizar chamados;
+- testes automatizados do fluxo principal.
+
+### Decisões desta POC
+
+- a triagem é **heurística**, para acelerar a prova de conceito;
+- a persistência está **em memória**, para reduzir complexidade inicial;
+- autenticação completa foi deixada para a próxima fase;
+- a API foi priorizada antes do frontend, porque ela representa o núcleo do sistema.
+
+### Como SOLID foi aplicado
+
+- **S**: entidades, casos de uso, API e repositório estão separados;
+- **O**: o classificador pode ser substituído sem alterar os casos de uso;
+- **L**: implementações concretas respeitam os contratos do domínio;
+- **I**: portas pequenas e específicas para repositório e classificador;
+- **D**: casos de uso dependem de abstrações, não de classes concretas.
+
+---
+
+## 4. Como executar a POC
+
+### Requisitos
+
+- Python 3.11+
+
+### Instalação
+
+```bash
+cd /home/runner/work/CallsTrend/CallsTrend
+python -m pip install -e .[dev]
+```
+
+### Subir a API
+
+```bash
+cd /home/runner/work/CallsTrend/CallsTrend
+uvicorn callstrend.main:app --app-dir src --reload
+```
+
+### Rodar testes
+
+```bash
+cd /home/runner/work/CallsTrend/CallsTrend
+pytest
+```
+
+### Endpoints da POC
+
+- `GET  /health`
+- `POST /api/v1/tickets`
+- `GET  /api/v1/tickets`
+- `PATCH /api/v1/tickets/{ticket_id}`
+
+---
+
+## API — Documentação dos Endpoints
+
+### Swagger interativo
+
+Com a API em execução, acesse a documentação interativa nos endereços abaixo:
+
+| Interface | URL |
+|---|---|
+| **Swagger UI** (recomendado) | `http://localhost:8000/docs` |
+| **ReDoc** | `http://localhost:8000/redoc` |
+| **OpenAPI JSON** | `http://localhost:8000/openapi.json` |
+
+Arquivo separado (somente API): `src/callstrend/api/doc/swagger.md`
+
+---
+
+### Enums e valores permitidos
+
+| Enum | Campo | Valores aceitos |
+|---|---|---|
+| **Categoria** | `category` | `Hardware`, `Software`, `Rede`, `Acesso`, `Outros` |
+| **Prioridade** | `priority` | `Baixa`, `Media`, `Alta` |
+| **Status** | `status` | `EmTriagem`, `Aberto`, `EmAtendimento`, `Resolvido`, `Fechado` |
+
+---
+
+### GET /health
+
+Verifica se a API está no ar.
+
+**Autenticação:** não necessária
+
+**Response 200 — OK**
+```json
+{
+  "status": "ok"
+}
+```
+
+---
+
+### POST /api/v1/tickets
+
+Abre um novo chamado técnico e executa a triagem automática por IA.
+
+**Autenticação:** não necessária (fase 1 — POC)
+
+#### Fluxo interno
+
+1. O chamado é registrado com status `EmTriagem`.
+2. O módulo de IA analisa título e descrição via palavras-chave ponderadas.
+3. O chamado é atualizado para `Aberto` com categoria e prioridade inferidas.
+4. A resposta retorna o chamado classificado.
+
+#### Request body
+
+```json
+{
+  "title": "VPN sem conectar",
+  "description": "Não consigo acessar o sistema interno pela VPN desde a manhã.",
+  "requester_name": "Maria Silva",
+  "requester_email": "maria@empresa.com"
+}
+```
+
+| Campo | Tipo | Obrigatório | Regras |
+|---|---|---|---|
+| `title` | `string` | ✅ | 3–120 caracteres |
+| `description` | `string` | ✅ | 10–2000 caracteres |
+| `requester_name` | `string` | ✅ | 3–80 caracteres |
+| `requester_email` | `string` | ✅ | 5–160 caracteres |
+
+#### Response 201 — Created
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "title": "VPN sem conectar",
+  "description": "Não consigo acessar o sistema interno pela VPN desde a manhã.",
+  "requester_name": "Maria Silva",
+  "requester_email": "maria@empresa.com",
+  "created_at": "2026-05-12T21:00:00Z",
+  "status": "Aberto",
+  "category": "Rede",
+  "priority": "Alta",
+  "classification_confidence": 0.83,
+  "classification_rationale": "Categoria sugerida: Rede (score 2). Prioridade sugerida: Alta (score 2)."
+}
+```
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `id` | `string` (UUID v4) | Identificador único do chamado |
+| `title` | `string` | Título informado |
+| `description` | `string` | Descrição informada |
+| `requester_name` | `string` | Nome do solicitante |
+| `requester_email` | `string` | E-mail do solicitante |
+| `created_at` | `datetime` (ISO 8601 UTC) | Data/hora de abertura |
+| `status` | `string` (enum) | Status atual do chamado |
+| `category` | `string` (enum) | Categoria atribuída pela IA |
+| `priority` | `string` (enum) | Prioridade atribuída pela IA |
+| `classification_confidence` | `float` (0.0–1.0) | Nível de confiança da classificação |
+| `classification_rationale` | `string` | Justificativa textual da IA |
+
+#### Outros códigos
+
+| Código | Situação |
+|---|---|
+| `422 Unprocessable Entity` | Campos inválidos ou ausentes |
+
+---
+
+### GET /api/v1/tickets
+
+Retorna todos os chamados registrados com sua classificação atual.
+
+**Autenticação:** não necessária (fase 1 — POC)
+
+#### Response 200 — OK
+
+Array de objetos `TicketResponse` (mesma estrutura do `POST`).
+
+```json
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "title": "VPN sem conectar",
+    "description": "Não consigo acessar o sistema interno pela VPN desde a manhã.",
+    "requester_name": "Maria Silva",
+    "requester_email": "maria@empresa.com",
+    "created_at": "2026-05-12T21:00:00Z",
+    "status": "Aberto",
+    "category": "Rede",
+    "priority": "Alta",
+    "classification_confidence": 0.83,
+    "classification_rationale": "Categoria sugerida: Rede (score 2). Prioridade sugerida: Alta (score 2)."
+  }
+]
+```
+
+Quando não há chamados: retorna `[]`.
+
+---
+
+### PATCH /api/v1/tickets/{ticket_id}
+
+Atualiza um chamado existente — uso administrativo.
+
+**Autenticação:** não necessária (fase 1 — POC)
+
+#### Path parameter
+
+| Parâmetro | Tipo | Descrição |
+|---|---|---|
+| `ticket_id` | `string` (UUID) | ID do chamado a ser atualizado |
+
+#### Request body
+
+Todos os campos são **opcionais**. Apenas os campos enviados serão alterados.
+
+```json
+{
+  "status": "EmAtendimento",
+  "category": "Rede",
+  "priority": "Alta"
+}
+```
+
+| Campo | Tipo | Obrigatório | Valores aceitos |
+|---|---|---|---|
+| `status` | `string` (enum) | ❌ | `EmTriagem`, `Aberto`, `EmAtendimento`, `Resolvido`, `Fechado` |
+| `category` | `string` (enum) | ❌ | `Hardware`, `Software`, `Rede`, `Acesso`, `Outros` |
+| `priority` | `string` (enum) | ❌ | `Baixa`, `Media`, `Alta` |
+
+#### Response 200 — OK
+
+Objeto `TicketResponse` com os dados atualizados.
+
+#### Outros códigos
+
+| Código | Situação |
+|---|---|
+| `404 Not Found` | `ticket_id` não encontrado |
+| `422 Unprocessable Entity` | Valor de enum inválido |
+
+---
+
+### Exemplos com curl
+
+**Abrir chamado:**
+```bash
+curl -X POST http://localhost:8000/api/v1/tickets \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Impressora não imprime",
+    "description": "A impressora do setor financeiro parou de funcionar após atualização do driver.",
+    "requester_name": "Carlos Mendes",
+    "requester_email": "carlos@empresa.com"
+  }'
+```
+
+**Listar chamados:**
+```bash
+curl http://localhost:8000/api/v1/tickets
+```
+
+**Atualizar status e corrigir prioridade:**
+```bash
+curl -X PATCH http://localhost:8000/api/v1/tickets/{ticket_id} \
+  -H "Content-Type: application/json" \
+  -d '{"status": "EmAtendimento", "priority": "Alta"}'
+```
+
+---
+
+## 5. Próximos passos recomendados
+
+1. adicionar cadastro e autenticação;
+2. persistir chamados em SQLite;
+3. registrar logs de classificação;
+4. criar frontend para usuário e administrador;
+5. trocar o classificador heurístico por modelo de NLP;
+6. ampliar histórico e auditoria administrativa.
+
+---
+
+## 6. Base conceitual do projeto
+
+## 6.1 Entregas acadêmicas esperadas
+
+- TAP;
+- cronograma inicial;
+- declaração de escopo;
+- EAP/WBS;
+- requisitos funcionais e não funcionais;
+- diagramas do sistema;
+- protótipo funcional;
+- módulo de triagem automática com IA;
+- relatório de testes;
+- documentação final.
+
+## 6.2 Requisitos funcionais de referência
+
+- **RF01** – cadastro e autenticação;
+- **RF02** – abertura de chamados com descrição textual;
+- **RF03** – classificação automática por categoria;
+- **RF04** – classificação automática por prioridade;
+- **RF05** – acompanhamento do status;
+- **RF06** – gestão administrativa;
+- **RF07** – atualização do status do chamado.
+
+## 6.3 Requisitos não funcionais de referência
+
+- interface simples e intuitiva;
+- resposta adequada da triagem;
+- uso de tecnologias open-source;
+- acesso via navegador;
+- organização do código e versionamento.
+
+## 6.4 Critérios de aceitação de referência
+
+- as funcionalidades do fluxo principal devem estar implementadas;
+- a triagem automática precisa ser demonstrável;
+- categoria e prioridade devem ser visíveis;
+- o sistema deve funcionar localmente;
+- a documentação deve estar organizada.
+
+## 6.5 Restrições e premissas
+
+- desenvolvimento individual;
+- orçamento zero;
+- base de dados reduzida ou simulada;
+- uso acadêmico;
+- ambiente local;
+- IA com caráter demonstrativo.
+
+---
+
+## 7. Diagramas
+
+## 7.1 Diagrama de Classes
 
 ```mermaid
 classDiagram
@@ -186,18 +630,7 @@ AutenticacaoService --> Usuario : valida acesso
 Administrador --> Chamado : gerencia
 ```
 
-### Refinamentos aplicados
-- **Administrador herda de Usuario**, como você pediu.
-- A **IA não substitui o backend**: ela é um módulo isolado, chamado pela classe `Backend`.
-- A entidade `ClassificacaoIA` foi separada do `Chamado` para deixar explícita a origem da classificação automática.
-- `LogClassificacao` ajuda a justificar a camada de dados e auditoria da IA.
-- Foram incluídos enums de **Categoria**, **Prioridade** e **StatusChamado** para fortalecer a modelagem.
-
----
-
-## 2. Diagrama de Sequência
-
-Fluxo principal: abertura de chamado com triagem automática por IA.
+## 7.2 Diagrama de Sequência
 
 ```mermaid
 sequenceDiagram
@@ -242,16 +675,7 @@ B-->>W: atualização concluída
 W-->>A: exibir sucesso
 ```
 
-### Pontos fortes deste fluxo
-- Mostra claramente que o **backend coordena tudo**.
-- O chamado pode ser criado inicialmente com status **EmTriagem** e depois atualizado para **Aberto** após resposta da IA.
-- O administrador entra depois para **validar/corrigir** a sugestão da IA.
-
----
-
-## 3. Diagrama de Atividades
-
-Fluxo de abertura e tratamento do chamado com decisão sobre ajuste administrativo.
+## 7.3 Diagrama de Atividades
 
 ```mermaid
 flowchart TD
@@ -279,16 +703,7 @@ flowchart TD
     T --> N[Fim]
 ```
 
-### Observações
-- Esse diagrama enfatiza bem o **processo de negócio**.
-- A revisão administrativa ficou opcional, o que combina com sua proposta de triagem automática.
-- O ponto de integração com IA aparece de forma objetiva.
-
----
-
-## 4. Diagrama de Componentes
-
-Modelagem da arquitetura em 4 camadas, com destaque para a integração Backend ↔ IA.
+## 7.4 Diagrama de Componentes
 
 ```mermaid
 flowchart LR
@@ -330,62 +745,3 @@ flowchart LR
     ORQ --> LOGDB
     ORQ --> TICKETDB
 ```
-
-### O que este diagrama deixa claro
-- A **Interface Web** e o **Painel Administrativo** consomem a **API Backend**.
-- O **Backend** contém autenticação, gestão de chamados e um **orquestrador** para a triagem.
-- O **Módulo de IA** está isolado, mas conectado ao backend.
-- O backend persiste tanto o chamado quanto os **logs da classificação**.
-
----
-
-## Sugestões de melhoria para sua entrega acadêmica
-
-Se você quiser deixar os diagramas ainda mais consistentes com documentação formal, recomendo:
-
-1. **Padronizar nomes dos status**
-   - Ex.: `Aberto`, `Em Triagem`, `Em Atendimento`, `Resolvido`, `Fechado`.
-
-2. **Adicionar confiança da IA**
-   - Isso enriquece a justificativa de por que o administrador pode revisar uma classificação.
-
-3. **Explicitar restrição de desempenho**
-   - No texto do trabalho, cite que o módulo de IA deve responder em até **3 segundos**.
-   - Em alguns casos, isso pode aparecer como nota no diagrama de componentes.
-
-4. **Manter a segurança fora do diagrama de classes principal**
-   - A autenticação pode aparecer como serviço, sem poluir demais a modelagem de domínio.
-
----
-
-## Versão resumida da interpretação conceitual
-
-- **Classes**: modelam entidades e serviços.
-- **Sequência**: mostra a ordem da abertura do chamado e da triagem automática.
-- **Atividades**: representa o fluxo operacional do processo.
-- **Componentes**: evidencia a arquitetura em 4 camadas.
-
-Descrição do Projeto para Refinamento de Modelagem
-Título: Sistema de Help Desk com Triagem Automática de Chamados (IA).
-1. Objetivo Geral:
-Desenvolver uma ferramenta acadêmica de Help Desk que utilize Inteligência Artificial para otimizar o fluxo de atendimento. O foco principal é a triagem automática, que elimina a necessidade de classificação manual imediata por parte do administrador.  
-2. Atores e Personas:
-• Usuário Final: Funcionário que abre chamados técnicos para resolver problemas rapidamente.  
-• Administrador: Responsável por gerenciar o volume de chamados, podendo validar ou corrigir a IA.  
-• Sistema de IA: Atua como um ator interno que realiza o processamento textual para classificação.  
-3. Requisitos Funcionais Chave:
-• Abertura e Triagem (RF03/RF04): O usuário fornece título e descrição; o sistema registra data/hora e executa o módulo de IA.  
-• Classificação por IA: O sistema deve atribuir automaticamente uma Categoria e um nível de Prioridade (Baixa, Média, Alta).  
-• Gestão Administrativa (RF06): O administrador tem o poder de alterar o status do chamado e ajustar as classificações sugeridas pela IA.  
-4. Arquitetura do Sistema (4-Tier):
-• Apresentação: Interface Web para interação do usuário e painéis administrativos.  
-• Aplicação (Backend): Camada de lógica de negócio, controle de autenticação e ponte para o módulo de IA.  
-• Inteligência Artificial: Módulo isolado de processamento de linguagem natural para classificação textual.  
-• Dados: Banco de dados relacional para persistência de usuários, chamados e logs.  
-5. Regras de Negócio e Restrições Técnicas:
-• Segurança: Autenticação obrigatória com senhas criptografadas via algoritmos de hash (ex: bcrypt).  
-• Desempenho: A triagem pela IA deve ocorrer em no máximo 3 segundos.  
-• Escopo: O sistema é focado em ambiente acadêmico, sem integrações externas (como e-mail ou Slack) nesta fase.
-
-
-1. Sugestão de Stack TecnológicaFrontend (Camada de Apresentação): React.js.  Justificativa: É ideal para criar interfaces simples e intuitivas (conforme o RNF03) e permite realizar a abertura de chamados com poucas interações.  Backend (Camada de Aplicação): Python com FastAPI ou Flask.  Justificativa: Python é a linguagem líder para integração com Inteligência Artificial. O FastAPI é extremamente rápido, ajudando a cumprir o requisito de desempenho de triagem em até 3 segundos (RNF01).  Módulo de IA (Camada de Inteligência): Scikit-learn ou spaCy.  Justificativa: São bibliotecas robustas para processamento de texto e classificação, perfeitas para um ambiente acadêmico demonstrativo.  Banco de Dados (Camada de Dados): PostgreSQL ou SQLite.  Justificativa: Como o projeto exige um banco relacional e armazenamento seguro de senhas (criptografia), essas opções são o padrão da indústria.
